@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Col, Row } from "react-bootstrap";
 import Select from "react-select";
 
@@ -10,12 +10,25 @@ const filterOptions = [
 ];
 
 function Search({ dispatch, state }) {
+  const [functionState, setFunctionState] = useState("");
   let defaultFilter = filterOptions.find((el) => el.value === state.filterTerm);
-  let defaultSearch = state.searchTerm;
+  // let defaultSearch = state.searchTerm;
 
   const setState = (type, value) => {
     dispatch({ type, value });
   };
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      if (functionState.trim().length > 0) {
+        setState("SEARCH", functionState);
+      }
+    }, 400);
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [functionState]);
 
   return (
     <Form className="p-5">
@@ -25,8 +38,11 @@ function Search({ dispatch, state }) {
             type="text"
             placeholder="Search"
             className=" mr-sm-2"
-            value={defaultSearch}
-            onChange={(e) => setState("SEARCH", e.target.value)}
+            value={functionState}
+            onChange={(e) => {
+              setFunctionState(e.target.value);
+              // setState("SEARCH", e.target.value.trim());
+            }}
           />
         </Col>
         <Col xs={4} md={3} lg={2}>
@@ -37,6 +53,7 @@ function Search({ dispatch, state }) {
             options={filterOptions}
             onChange={(val) => {
               setState("FILTER", val.value);
+              setFunctionState("");
             }}
           />
         </Col>
