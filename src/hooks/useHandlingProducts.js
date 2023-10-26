@@ -38,14 +38,19 @@ function useHandlingProducts() {
   const api_key = "14bdd69ce887376edfafb09f23f78fe9";
   const baseURL = "https://api.themoviedb.org/3/";
 
+  const REQUEST = axios.create({
+    baseURL: baseURL,
+    params: { api_key: api_key },
+  });
+
   useEffect(() => {
-    const URL = `${baseURL}${state.route}?api_key=${api_key}&${
-      state.searchTerm ? `query=${state.searchTerm}` : ""
+    const URL = `${baseURL}${state.route}${
+      state.searchTerm ? `?query=${state.searchTerm}` : ""
     }`;
     async function getAllProducts() {
       try {
         setIsLoading(true);
-        const res = await axios.get(URL);
+        const res = await REQUEST.get(URL);
         setProducts(res.data);
         setIsError(false);
       } catch (error) {
