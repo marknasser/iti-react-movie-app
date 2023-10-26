@@ -8,6 +8,7 @@ const filterOptions = [
   { value: "tv", label: "TV" },
   { value: "person", label: "Person" },
 ];
+
 function Search({ dispatch, state }) {
   let defaultFilter = filterOptions.find((el) => el.value === state.filterTerm);
   let defaultSearch = state.searchTerm;

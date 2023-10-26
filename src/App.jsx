@@ -13,7 +13,7 @@ import useHandlingProducts from "./hooks/useHandlingProducts";
 function App() {
   const { products, isLoading, isError, dispatch, state } =
     useHandlingProducts();
-  console.log(products);
+
   function getProduct(id) {
     return products?.results?.find((el) => el.id === id);
   }
